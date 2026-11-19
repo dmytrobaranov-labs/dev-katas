@@ -1,0 +1,27 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Go
+*.exe
+*.test
+*.out
+vendor/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

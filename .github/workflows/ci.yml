@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      ms: ${{ steps.filter.outputs.ms }}
+      py: ${{ steps.filter.outputs.py }}
+      go: ${{ steps.filter.outputs.go }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            ms: ['ms/**']
+            py: ['py/**']
+            go: ['go/**']
+
+  ms:
+    needs: changes
+    if: needs.changes.outputs.ms == 'true'
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: ms } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '10.0.x' }
+      - run: if find . -name '*.csproj' | grep -q .; then dotnet test; else echo 'No .NET projects yet'; fi
+
+  py:
+    needs: changes
+    if: needs.changes.outputs.py == 'true'
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: py } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install pytest && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - run: if find . -name 'test_*.py' -o -name '*_test.py' | grep -q .; then pytest; else echo 'No tests yet'; fi
+
+  go:
+    needs: changes
+    if: needs.changes.outputs.go == 'true'
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: go } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: 'stable' }
+      - run: if [ -f go.mod ]; then go test ./...; else echo 'No go.mod yet'; fi
