@@ -4,7 +4,7 @@ Development labs by [Dmytro Baranov](https://www.linkedin.com/in/dmytrobaranov/)
 
 | Folder | Stack | What's inside |
 |---|---|---|
-| [`ms/`](ms/) | C# / .NET | TDD katas, C# and ASP.NET Core practicums |
+| [`ms/`](ms/) | C# / .NET | Middle .NET Developer Technical Practicum: TDD in C#, delegates, async, ASP.NET Core, EF Core, SQL Server |
 | [`py/`](py/) | Python | Algorithms, math and ML exercises |
 | [`go/`](go/) | Go | Go exercises |
 
